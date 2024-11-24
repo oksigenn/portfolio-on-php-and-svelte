@@ -1,0 +1,39 @@
+body{
+  background: linear-gradient(
+  to bottom,
+  #282c34,#026802
+);
+background-repeat: no-repeat;
+  font-family: "JetBrains Mono";
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+a{
+  text-decoration: none;
+}
+
+button{
+  margin-top: 50px;
+  padding: 10px 30px;
+  font-family: 'Jetbrains Mono';
+  font-size: 15px;
+  border-radius: 5px;
+  background-color: white;
+  border: none;
+  color: black;
+  cursor: pointer;
+  transition: .2s ease;
+}
+
+
+
+button a{
+  color: black;
+}
+
+::selection{
+  background-color: white;
+  color: black;
+}
