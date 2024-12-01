@@ -6,6 +6,7 @@ header('Content-Type: application/json');
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = htmlspecialchars($_POST['name']);
     $feedback = htmlspecialchars($_POST['feedback']);
+    $created_at = htmlspecialchars($_POST['created_at']); // Принимаем время от клиента
 
     // Подключение к базе данных
     $conn = new mysqli("localhost", "root", "mysql", "portfolio-feedback");
@@ -15,11 +16,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Запрос на добавление отзыва
-    $sql = "INSERT INTO reviews (name, feedback, created_at) VALUES ('$name', '$feedback', NOW())";
+    $sql = "INSERT INTO reviews (name, feedback, created_at) VALUES ('$name', '$feedback', '$created_at')";
     if ($conn->query($sql) === TRUE) {
-        echo "Отзыв добавлен";
+        echo json_encode(["message" => "Отзыв добавлен"]);
     } else {
-        echo "Ошибка: " . $conn->error;
+        echo json_encode(["error" => "Ошибка: " . $conn->error]);
     }
 
     $conn->close();

@@ -1,39 +1,95 @@
 body{
-  background: linear-gradient(
-  to bottom,
-  #282c34,#026802
-);
-background-repeat: no-repeat;
+  background: linear-gradient(45deg, #041129, #0a1613, #12180b, #1f131c, #350404);
   font-family: "JetBrains Mono";
-  margin: 0;
-  padding: 0;
-  height: 100%;
+  height: 100vh;
 }
 
-a{
+
+a {
   text-decoration: none;
+  position: relative; /* Нужно для управления псевдоэлементом */
+  color: #000;
 }
 
-button{
-  margin-top: 50px;
-  padding: 10px 30px;
-  font-family: 'Jetbrains Mono';
-  font-size: 15px;
-  border-radius: 5px;
-  background-color: white;
-  border: none;
-  color: black;
-  cursor: pointer;
-  transition: .2s ease;
+a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px; /* Расстояние от текста */
+  width: 0;
+  height: 1px; /* Толщина подчеркивания */
+  background-color: white; /* Цвет подчеркивания */
+  transition: width 0.3s ease; /* Анимация изменения ширины */
 }
+
+a:hover::after {
+  width: 100%; /* Подчеркивание растягивается на весь текст */
+}
+
+/* Основной стиль кнопки */
+/* Основной стиль кнопки */
+button {
+  background: #027527; /* Полупрозрачный фон */
+  border: none; /* Полупрозрачная граница */
+  color: white;
+  font-size: 16px;
+  font-family: "Jetbrains Mono";
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px; /* Сглаженные углы */
+  position: relative;
+  overflow: hidden; /* Ограничиваем псевдоэлемент внутри кнопки */
+  box-sizing: border-box; /* Учитываем границу внутри размера кнопки */
+  transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+  backdrop-filter: blur(5px); /* Размытие фона для мягкости */
+}
+
+/* Псевдоэлемент для подчеркивания */
+button::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 4px; /* Толщина подчеркивания */
+  background-color: white; /* Цвет подчеркивания */
+  transition: width 0.3s ease;
+}
+
+/* Эффект при наведении */
+button:hover { /* Текст становится черным при наведении */
+  background-color: #04642cbb; /* Мягкое затемнение фона */
+  border-color: white; /* Граница становится белой */
+}
+
+button:hover::after {
+  width: 100%; /* Подчеркивание растягивается на всю ширину кнопки */
+}
+
+
 
 
 
 button a{
-  color: black;
+  color: white;
+}
+button a::after{
+  height: 0;
 }
 
 ::selection{
   background-color: white;
   color: black;
 }
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+};

@@ -1,309 +1,280 @@
 <script>
-    import { onMount } from "svelte";
-    import FaTelegram from 'svelte-icons/fa/FaTelegram.svelte'
-       let technologies = ['HTML', 'CSS', 'JavaScript', 'Svelte', 'PHP'];
-  let src = 'https://elements-resized.envatousercontent.com/elements-video-cover-images/7df0edcc-deb0-4d8d-91f0-aacd1507526c/video_preview/video_preview_0000.jpg?w=500&cf_fit=cover&q=85&format=auto&s=82d79eee2dd10f3e92aa11f9d339088ef161a099026d54ad36960dbc0b5a251d'
-    
-  const glitchChars1 = ['~', ' ', '?', '£'];
-  const glitchChars2 = ['@', '#', '$', '%', '&',  '¶', '₿', '', 'G', 'E', 'N'];
-  let text1 = 'Mobile, fullstack developer'
-  let text2 = 'Java, Python, C#, JS'
-  let text3 = 'Flask, Spring Boot, Svelte'
-  let displayedText1 = ""; // Текст, который будет отображаться
-  let displayedText2 = ""; // Текст, который будет отображаться
-  let displayedText3 = ""; // Текст, который будет отображаться
+  import { onMount } from "svelte";
+  let isPrintingComplete = false
+
+  let text1 = 'Java, Python, C#, JS'
+  let text2 = 'Flask, Spring Boot, Svelte'
+  let text3 = 'Sigma developer from Google.😎'
+  let displayedText1 = ""; 
+  let displayedText2 = ""; 
+  let displayedText3 = ""; 
   let index1 = 0;
   let index2 = 0
-  let index3 = 0 // Индекс текущего символа
-  let isCursorVisible = true; // Переменная для мигающего курсора // Переменная для мигающего курсора
+  let index3 = 0 
+  let isCursorVisible = true; 
 
-  // Функция для печати текста
   function printText() {
     const interval = setInterval(() => {
       if (index1 < text1.length) {
         displayedText1 += text1[index1];
-
-
-        index1++;
-      } else {
-        clearInterval(interval); // Останавливаем интервал после завершения
+         index1++;
       }
 
       if (index2 < text2.length) {
         displayedText2 += text2[index2];
-        if(index2===text2.length){
-          displayedText2 += text2[index2+1]
-        }
-
-
         index2++;
       } 
 
       if (index3 < text3.length) {
         displayedText3 += text3[index3];
-
-
         index3++;
-      } 
-    }, 50); // Интервал между символами (100 мс)
+      }else {
+        clearInterval(interval);
+        setTimeout(() => {
+          isPrintingComplete = true
+          isCursorVisible = false
+        }, 3000);
+      }
+    }, 50);
   }
-
-  let litchChar1 = glitchChars1[Math.floor(Math.random() * glitchChars1.length)];
-  let litchChar2 = glitchChars2[Math.floor(Math.random() * glitchChars2.length)];
-  function glitchChar1() {
-    litchChar1 = glitchChars1[Math.floor(Math.random() * glitchChars1.length)];
-
-
-    // Через небольшой промежуток времени возвращаем оригинальные символы
-    setTimeout(() => {
-      
-    }, Math.random() * 1000 + 100);
-  }
-
-  function glitchChar2() {
-    
-    litchChar2 = glitchChars2[Math.floor(Math.random() * glitchChars2.length)];
-
-    // Через небольшой промежуток времени возвращаем оригинальные символы
-    setTimeout(() => {
-      
-    }, Math.random() * 500 + 100);
-  }
-  
   let interval;
   let interval2;
   onMount(() => {
     printText();
-    interval = setInterval(glitchChar1, 1000);
-    setInterval(() => {
-      isCursorVisible = !isCursorVisible; // Переключаем видимость курсора
-    }, 600); // Мигающий курсор (переключение каждую секунду)
-    interval2 = setInterval(glitchChar2,500) // Эффект каждые 300 мс
-    return () => clearInterval(interval); // Очищаем интервал при демонтировании
+    const cursorInterval = setInterval(() => {
+      if (!isPrintingComplete) {
+        isCursorVisible = !isCursorVisible;
+      }
+    }, 600);
+    return () => clearInterval(interval);
   });
-  </script>
-  
-  <style>
-    .card{
-        text-align: center;
-        color: white;
-        height: 100vh;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        width: 100%;
-        overflow: hidden;
-    }
-.logo{
-    font-family: "JetBrains Mono"; /* Используем моноширинный шрифт */
-      background-color: #282c34; /* Темный фон */
-      color: #39FF14; /* Яркий зеленый цвет */
-      text-align: center;
-      padding: 50px;
-      border-right: 3px outset white;
-}
-    img{
-      position: absolute; /* Абсолютное позиционирование относительно .logo */
-    top: 50%; /* Центрируем по вертикали */
-    left: 50%; /* Центрируем по горизонтали */
-    transform: translate(-50%, -50%); /* Сдвигаем на половину размера изображения */
-    z-index: 10; /* Обеспечиваем отображение поверх текста */
-    width: auto; /* Не даём изображению растягиваться */
-    height: auto; /* Пропорциональная высота */
-    max-width: 90%; /* Ограничиваем максимальную ширину изображения */
-    max-height: 90%; /* Ограничиваем максимальную высоту изображения */
-    }
-    @keyframes typing {
-      from {
-        width: 0;
-      }
-      to {
-        width: 30em; /* Ширина текста, подгоняйте под ваш текст */
-      }
-    }
-    pre {
-        user-select: none;
-      font-size: 24px; /* Размер шрифта для ASCII-арта */
-      line-height: 1.2; /* Межстрочный интервал для лучшего отображения */
-      white-space: pre-wrap; /* Обрезка текста и перенос строк */
-      word-wrap: break-word;
-        padding: 0;
-        margin: 0;
-    }
+</script>
 
-    .main-pre{
-        display: flex;
-        position: relative; /* Оставляем остальное содержимое на месте */
-    z-index: 1; /* Устанавливаем ниже изображения */
-    overflow: hidden; /* Если нужно, скрыть часть содержимого */
-        
-    }
-    .logo{
-      box-shadow: 10px 0 5px #282c34;
-      position: relative; /* Устанавливаем контекст для позиционирования */
-    display: block; 
-    }
-    
-    .number{
-        color: darkgreen;
-        animation: blink 1s infinite alternate;
-    }
-    .one-symbol{
-        color:rgb(157, 228, 139);
-        animation: blink 1s infinite alternate;
-    }
-    .two-symbol{
-        color: lightblue;
-        animation: blink 1s infinite alternate;
-    }
-    @keyframes blink {
-      from {
-        border-color: #026802;
-      }
-      to {
-        border-color: transparent;
-      }
-    }
-    .logo-text{
-        font-size: 12px;
-    }
-div a{
-  color: white;
-}
-    .info{
-      text-align: left;
-color: white;
-      padding: 0;
-      flex-grow: 1;
-      background: linear-gradient(
-  to right,
-  #282c34,#026802
-);
-.info >a{
-  color: white;
-}
+<style>
+  .card {
+    text-align: center;
+    color: white;
+    font-family: 'Jetbrains Mono';
+    font-weight: 500;
+    height: 100%;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(45deg, #041129, #0a1613, #12180b, #1f131c, #350404);
+    overflow: hidden;
+  }
 
-      padding-left: 20px;
+  .card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, #041129, rgb(17, 24, 34), #0a1613, #12180b, #1b1311, #1f131c, #350404);
+    background-size: 100% 100%;
+    filter: blur(50px);
+    z-index: -1;
+  }
 
-    }
-    
+  .logo {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
 
-    
-    .printer {
-    font-family: monospace;
-    white-space: pre; /* Сохраняем форматирование текста */
+  .logo img {
+    border-radius: 15px;
+    max-width: 350px;
+    width: 80%;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.4);
+  }
+
+  .info {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+
+  .section {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+    width: 100%;
+    max-width: 600px;
+    transition: scale 0.3s ease, box-shadow 0.3s ease height 1s ease;
+  }
+
+  .section:hover {
+    box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.6);
+    scale: 1.005;
+  }
+
+  .section h3 {
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 15px;
+    text-align: center;
+  }
+
+  .section p {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.8);
     line-height: 1.5;
-    font-size: 15px;
-    display: inline-block;
+    margin: 0;
+    text-align: center;
   }
 
   .cursor {
     display: inline-block;
-    width: 1ch; /* Задаем ширину курсора */
-    height: 1.2em; /* Высота для имитации квадратного курсора */
+    width: 2px;
+    height: 1em;
     background-color: white;
-    visibility: hidden; /* Скрытый курсор по умолчанию */
+    margin: 0;
+    vertical-align: baseline;
+    animation: blink 0.6s steps(1) infinite;
   }
 
-  .cursor-visible {
-    visibility: visible; /* Видимый курсор */
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
   }
-  .h2{
-    font-size: 20px;
+
+  .contacts a {
+    display: inline-block;
+    margin: 10px 10px;
+    color: #027527;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s ease, transform 0.2s ease;
+  }
+
+  .contacts a:hover {
+    color: white;
+  }
+
+  button {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    border: none;
   }
 
   button a {
-    color: black;
+    text-decoration: none;
+    color: inherit;
   }
 
-  
-  </style>
-  
-  <div class="card">
-    <div class="logo">
-<pre class="main-pre"><pre>
-O<span class="number">0</span><span class="number">{litchChar2}</span><span class="two-symbol">%</span>O
-<span class="one-symbol">|</span>   O
-O   <span class="one-symbol">{litchChar1}</span>
-<span class="two-symbol">{litchChar1}</span>   O
-O<span class="one-symbol">{litchChar1}</span><span class="number">0</span><span class="two-symbol">#</span><span class="number">0</span>
-</pre><pre>
-    <span class="number">7</span>   K
-   K  <span class="two-symbol">&</span>
-   K<span class="one-symbol">{litchChar1}</span>K 
-   <span class="number">7</span>  K
-    <span class="two-symbol">{litchChar1}</span>   <span class="two-symbol">#</span>
-</pre><pre>
-    SS<span class="two-symbol">{litchChar1}</span><span class="two-symbol">{litchChar1}</span>S
-<span class="number">2</span>
-    <span class="one-symbol">+</span><span class="one-symbol">!</span>SS<span class="one-symbol">{litchChar1}</span>
-        S
-    SS<span class="two-symbol">#</span><span class="two-symbol">#</span><span class="number">2</span>
-</pre><pre>
-    III
-    <span class="one-symbol">|</span>
-    <span class="one-symbol">|</span>
-    <span class="number">1</span>
-    III
-</pre><pre>
-    G<span class="two-symbol">&</span><span class="one-symbol">{litchChar1}</span><span class="number">8</span>G
-<span class="two-symbol">{litchChar1}</span>
-    G  GG
-    G   <span class="two-symbol">%</span>
-    <span class="number">8</span><span class="number">8</span>GGG
-</pre><pre>
-    <span class="two-symbol">££</span>EEE
-E
-    E<span class="number">3</span><span class="number">3</span><span class="two-symbol">ee</span>
-E
-    <span class="two-symbol">%</span>E<span class="number">3</span>E<span class="one-symbol">{litchChar1}</span>
-</pre><pre>
-    <span class="number">4</span>   <span class="two-symbol">&</span>
-    <span class="two-symbol">Н</span>N  <span class="number">4</span>
-    <span class="two-symbol">Н</span> <span class="two-symbol">Н</span> N
-    <span class="one-symbol">?</span>  N<span class="two-symbol">&</span>
-    N   N
-</pre>
+  button[style*="cursor: no-drop"] a {
+    pointer-events: none;
+    opacity: 0.6;
+  }
+
+  @media (max-width: 768px) {
+    .card {
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 0;
+    }
+
+    .logo img {
+      max-width: 250px;
+    }
+
+    .section {
+      width: 90%;
+      padding: 15px;
+    }
+
+    .section h3 {
+      font-size: 18px;
+    }
+
+    .section p {
+      font-size: 14px;
+    }
+
+    .contacts a {
+      font-size: 14px;
+    }
+
+    button {
+      width: 90%;
+    }
+  }
+
+  @media (max-width: 650px) {
+    .section {
+      padding: 10px;
+    }
+
+    .contacts a {
+      font-size: 12px;
+    }
+
+    button {
+      font-size: 14px;
+      padding: 8px;
+    }
+  }
+</style>
 
 
-</pre>
-<img src={src} alt="image">
-    </div>
-<div class="info">
-        <h1>"Oksigen" Illia</h1>
-        <div style="margin-bottom: 30px;" class="printer h2">
-          {displayedText1}
-          <span class:cursor-visible={isCursorVisible} class="cursor"></span>
-        </div>
-    <div>
-      <h3>Stack:</h3>
-      <h4>Languages</h4>
-      <div class="printer">
-        {displayedText2}
-        <span class:cursor-visible={isCursorVisible} class="cursor"></span>
-      </div>
-      <h4>
-        Frameworks
-      </h4>
-      <div class="printer">
+<div class="card">
+  <div class="info">
+
+    <div class="section">
+      <h3>About Me</h3>
+      <p class="printer">
         {displayedText3}
-        <span class:cursor-visible={isCursorVisible} class="cursor"></span>
+        <span class:cursor={isCursorVisible}></span>
+      </p>
+    </div>
+
+    <div class="section">
+      <h3>Stack</h3>
+      <div>
+        <h4>Languages:</h4>
+        <p class="printer">{displayedText1}<span class:cursor={isCursorVisible}></span></p>
+      </div>
+      <div style="margin-top: 10px;">
+        <h4>Frameworks:</h4>
+        <p class="printer">{displayedText2}<span class:cursor={isCursorVisible}></span></p>
       </div>
     </div>
-    <div style="margin-top: 30px;">
-      <h3>Contacts:</h3>
-      <a href="https:/t.me/oks1genn">Telegram</a>
+
+    <div class="section contacts">
+      <h3>Contacts</h3>
+      <a href="https://t.me/oks1genn">Telegram</a>
       <a href="https://discord.com/users/1156598346803331285/">Discord</a>
-      <a href="https:/github.com/oksigenn">Github</a>
+      <a href="https://github.com/oksigenn">Github</a>
       <a href="mailto:sssupboy@gmail.com">Email</a>
-      
-
-      
-
-
     </div>
-    <button><a href="/comments">Оставить отзыв</a></button>
+
+    <div class="buttons">
+      <button>
+        <a href="/comments">Write a comment</a>
+
+
+      </button>
+      <button style="cursor: no-drop;"><a style="cursor: no-drop;" href="#">CV</a></button>
     </div>
+
   </div>
-
-  
+</div>
